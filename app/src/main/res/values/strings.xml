@@ -1,0 +1,9 @@
+<resources>
+
+    <string name="app_name">Survey</string>
+    <string name="survey_question">Do you like fresh baked chocolate chip cookies?</string>
+    <string name="yes_button">Yes</string>
+    <string name="no_button">No</string>
+    <string name="results">Results</string>
+
+</resources>
