@@ -140,9 +140,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // This is where the program reloads the Hashmap when it restarts.
         if (savedInstanceState != null) {
 
-            savedInstanceState.getSerializable(INDEX_KEY);
+           surveyBank = (HashMap<String, Integer>) savedInstanceState.getSerializable(INDEX_KEY);
 
         }
 
