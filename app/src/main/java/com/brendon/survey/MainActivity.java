@@ -2,6 +2,7 @@ package com.brendon.survey;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private static final String INDEX_KEY= "Survey bank";
 
 
     private TextView mSurveyQuestion;
@@ -38,13 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
         String userVote = answerTemp;
 
-        // Sets up a new survey pool if none exists.
-        if (surveyBank.isEmpty()) {
-
-            surveyBank.put("yes", yesStart);
-            surveyBank.put("no", noStart);
-
-        }
 
         if (userVote.equalsIgnoreCase("yes")) {
 
@@ -79,6 +74,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+                if (surveyBank.isEmpty()) {
+
+                    surveyBank.put("yes", yesStart);
+                    surveyBank.put("no", noStart);
+
+                }
+
                 answerTemp = "yes";
 
                 updateSurvey();
@@ -90,6 +93,14 @@ public class MainActivity extends AppCompatActivity {
         mNoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+                if (surveyBank.isEmpty()) {
+
+                    surveyBank.put("yes", yesStart);
+                    surveyBank.put("no", noStart);
+
+                }
 
                 answerTemp = "no";
 
@@ -129,7 +140,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        if (savedInstanceState != null) {
+
+            savedInstanceState.getSerializable(INDEX_KEY);
+
+        }
+
         updateSurvey();
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        Log.i(TAG, "onSaveInstance");
+
+        savedInstanceState.putSerializable(INDEX_KEY,surveyBank);
 
     }
 
@@ -147,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG, "on start");
     }
 
     @Override
