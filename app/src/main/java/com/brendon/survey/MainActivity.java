@@ -1,5 +1,6 @@
 package com.brendon.survey;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static final String INDEX_KEY= "Survey bank";
+    private static final String HASMAP_INDEX_KEY = "surveyHash";
 
 
     private TextView mSurveyQuestion;
@@ -25,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
     /*
     This section is to provide a starting point for the values
      */
-    private int yesStart = 0;
-    private int noStart = 0;
+    private int answerStart1 = 0;
+    private int answerStart2 = 0;
     private String answerTemp = "";
 
     /*
@@ -77,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (surveyBank.isEmpty()) {
 
-                    surveyBank.put("yes", yesStart);
-                    surveyBank.put("no", noStart);
+                    surveyBank.put("yes", answerStart1);
+                    surveyBank.put("no", answerStart2);
 
                 }
 
@@ -97,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (surveyBank.isEmpty()) {
 
-                    surveyBank.put("yes", yesStart);
-                    surveyBank.put("no", noStart);
+                    surveyBank.put("yes", answerStart1);
+                    surveyBank.put("no", answerStart2);
 
                 }
 
@@ -114,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+
                 if (surveyBank == null) {
 
                     Toast.makeText(MainActivity.this, "No results to be had!", Toast.LENGTH_SHORT).show();
@@ -125,8 +129,10 @@ public class MainActivity extends AppCompatActivity {
                     + surveyBank.get("no") + " number of people say no.", Toast.LENGTH_LONG).show();
                 }
 
+
             }
         });
+
 
 
         //Listener for the reset button.
@@ -134,8 +140,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                surveyBank.put("yes", yesStart);
-                surveyBank.put("no", noStart);
+                surveyBank.put("yes", answerStart1);
+                surveyBank.put("no", answerStart2);
 
             }
         });
