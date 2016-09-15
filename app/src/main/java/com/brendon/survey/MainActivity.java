@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -15,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static final String INDEX_KEY= "Survey bank";
-    private static final String HASMAP_INDEX_KEY = "surveyHash";
+    public static final String HASHMAP_INDEX_KEY = "surveyHash";
 
 
     private TextView mSurveyQuestion;
@@ -117,7 +116,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
+                Intent intent = new Intent(MainActivity.this, SurveyResult.class);
+                intent.putExtra(HASHMAP_INDEX_KEY, surveyBank);
 
+                startActivity(intent);
+
+
+                /*
                 if (surveyBank == null) {
 
                     Toast.makeText(MainActivity.this, "No results to be had!", Toast.LENGTH_SHORT).show();
@@ -127,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
                     Toast.makeText(MainActivity.this, surveyBank.get("yes") + " number of people say yes. " + "\n"
                     + surveyBank.get("no") + " number of people say no.", Toast.LENGTH_LONG).show();
-                }
+                } */
 
 
             }
