@@ -19,7 +19,10 @@ public class SurveyResult extends AppCompatActivity {
 
         Intent iHash = getIntent(); // I want this section to pull in the Hasmap from the MainActivity.
 
-        mSurveyBank = (HashMap<String, Integer>) iHash.getSerializableExtra("HASHMAP_INDEX_KEY"); // This keeps coming up as Null.
+       // mSurveyBank = (HashMap<String, Integer>) iHash.getSerializableExtra("HASHMAP_INDEX_KEY"); // This keeps coming up as Null.
+            // Use the variable with the key from MainActivity and you'll get your data. Sorry for sending off on the wrong track!
+        mSurveyBank = (HashMap<String, Integer>) iHash.getSerializableExtra(MainActivity.HASHMAP_INDEX_KEY); // This keeps coming up as Null.
+
 
     }
 }
