@@ -13,8 +13,13 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private static final String INDEX_KEY= "Survey bank";
-    public static final String HASHMAP_INDEX_KEY = "surveyHash";
+    public static final String INDEX_KEY= "Survey bank";
+    private static final String QUESTION_INDEX_KEY = "Question key";
+    private static final String HASH_INDEX_KEY = "Hash key";
+
+    public static String mAnswerkey1 = "yes";
+    public static String mAnswerkey2 = "no";
+
 
 
     private TextView mSurveyQuestion;
@@ -26,9 +31,10 @@ public class MainActivity extends AppCompatActivity {
     /*
     This section is to provide a starting point for the values
      */
-    private int answerStart1 = 0;
-    private int answerStart2 = 0;
+    private int mAnswerStart1 = 0;
+    private int mAnswerStart2 = 0;
     private String answerTemp = "";
+    private String mCurrentSurveyQuestion = "Do you like fresh baked chocolate chip cookies?";
 
     /*
     Survey answer total will be kep in this Hashmap.
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mSurveyQuestion = (TextView) findViewById(R.id.survey_question);
+        mSurveyQuestion.setText(mCurrentSurveyQuestion);
         mYesButton = (Button) findViewById(R.id.yes_button);
         mNoButton = (Button) findViewById(R.id.no_button);
         mResetButton = (Button) findViewById(R.id.reset_button);
@@ -78,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (surveyBank.isEmpty()) {
 
-                    surveyBank.put("yes", answerStart1);
-                    surveyBank.put("no", answerStart2);
+                    surveyBank.put(mAnswerkey1, mAnswerStart1);
+                    surveyBank.put(mAnswerkey2, mAnswerStart2);
 
                 }
 
@@ -98,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (surveyBank.isEmpty()) {
 
-                    surveyBank.put("yes", answerStart1);
-                    surveyBank.put("no", answerStart2);
+                    surveyBank.put("yes", mAnswerStart1);
+                    surveyBank.put("no", mAnswerStart2);
 
                 }
 
@@ -117,22 +124,11 @@ public class MainActivity extends AppCompatActivity {
 
 
                 Intent intent = new Intent(MainActivity.this, SurveyResult.class);
-                intent.putExtra(HASHMAP_INDEX_KEY, surveyBank);
+                intent.putExtra(HASH_INDEX_KEY, surveyBank);
+                intent.putExtra(QUESTION_INDEX_KEY, mCurrentSurveyQuestion);
+
 
                 startActivity(intent);
-
-
-                /*
-                if (surveyBank == null) {
-
-                    Toast.makeText(MainActivity.this, "No results to be had!", Toast.LENGTH_SHORT).show();
-                }
-
-                else {
-
-                    Toast.makeText(MainActivity.this, surveyBank.get("yes") + " number of people say yes. " + "\n"
-                    + surveyBank.get("no") + " number of people say no.", Toast.LENGTH_LONG).show();
-                } */
 
 
             }
@@ -145,8 +141,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                surveyBank.put("yes", answerStart1);
-                surveyBank.put("no", answerStart2);
+                surveyBank.put("yes", mAnswerStart1);
+                surveyBank.put("no", mAnswerStart2);
 
             }
         });
