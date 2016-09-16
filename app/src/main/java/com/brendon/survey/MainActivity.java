@@ -16,9 +16,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String INDEX_KEY= "Survey bank";
     private static final String QUESTION_INDEX_KEY = "Question key";
     private static final String HASH_INDEX_KEY = "Hash key";
-
-    public static String mAnswerkey1 = "yes";
-    public static String mAnswerkey2 = "no";
+    private static final int SURVEY_REQUEST_CODE = 1;
 
 
 
@@ -34,28 +32,39 @@ public class MainActivity extends AppCompatActivity {
     private int mAnswerStart1 = 0;
     private int mAnswerStart2 = 0;
     private String answerTemp = "";
-    private String mCurrentSurveyQuestion = "Do you like fresh baked chocolate chip cookies?";
+
+    public String mCurrentSurveyQuestion = "Do you like fresh baked chocolate chip cookies?";
+    public static String mAnswerkey1 = "yes";
+    public static String mAnswerkey2 = "no";
 
     /*
     Survey answer total will be kep in this Hashmap.
      */
-    private HashMap<String,Integer> surveyBank = new HashMap<String, Integer>();
+    private HashMap<String,Integer> surveyBank;
 
 
     // Updates the surveyBank
     private void updateSurvey() {
 
+        if (surveyBank == null) {
+
+            surveyBank = new HashMap<String, Integer>();
+            surveyBank.put(mAnswerkey1, mAnswerStart1);
+            surveyBank.put(mAnswerkey2, mAnswerStart2);
+
+        }
+
         String userVote = answerTemp;
 
 
-        if (userVote.equalsIgnoreCase("yes")) {
+        if (userVote.equalsIgnoreCase(mAnswerkey1)) {
 
-            surveyBank.put(userVote, surveyBank.get("yes") + 1);
+            surveyBank.put(userVote, surveyBank.get(mAnswerkey1) + 1);
 
         }
-        if (userVote.equalsIgnoreCase("no")) {
+        if (userVote.equalsIgnoreCase(mAnswerkey2)) {
 
-            surveyBank.put(userVote, surveyBank.get("no") + 1);
+            surveyBank.put(userVote, surveyBank.get(mAnswerkey2) + 1);
 
         }
 
@@ -90,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-                answerTemp = "yes";
+                answerTemp = mAnswerkey1;
 
                 updateSurvey();
 
@@ -105,12 +114,12 @@ public class MainActivity extends AppCompatActivity {
 
                 if (surveyBank.isEmpty()) {
 
-                    surveyBank.put("yes", mAnswerStart1);
-                    surveyBank.put("no", mAnswerStart2);
+                    surveyBank.put(mAnswerkey1, mAnswerStart1);
+                    surveyBank.put(mAnswerkey2, mAnswerStart2);
 
                 }
 
-                answerTemp = "no";
+                answerTemp = mAnswerkey2;
 
                 updateSurvey();
 
@@ -124,11 +133,11 @@ public class MainActivity extends AppCompatActivity {
 
 
                 Intent intent = new Intent(MainActivity.this, SurveyResult.class);
-                intent.putExtra(HASH_INDEX_KEY, surveyBank);
-                intent.putExtra(QUESTION_INDEX_KEY, mCurrentSurveyQuestion);
+                intent.putExtra(HASH_INDEX_KEY, surveyBank); // survey data
+                intent.putExtra(QUESTION_INDEX_KEY, mCurrentSurveyQuestion); // current question
 
 
-                startActivity(intent);
+                startActivityForResult(intent, SURVEY_REQUEST_CODE);
 
 
             }
@@ -141,8 +150,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                surveyBank.put("yes", mAnswerStart1);
-                surveyBank.put("no", mAnswerStart2);
+                surveyBank.put(mAnswerkey1, mAnswerStart1);
+                surveyBank.put(mAnswerkey2, mAnswerStart2);
 
             }
         });
@@ -165,6 +174,21 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "onSaveInstance");
 
         savedInstanceState.putSerializable(INDEX_KEY,surveyBank);
+
+    }
+
+    // updates survey hash from data in SurveyResult.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == SURVEY_REQUEST_CODE) {
+
+            if (resultCode == RESULT_OK && data.hasExtra("surveyHash")) {
+
+
+                surveyBank = (HashMap<String, Integer>) data.getSerializableExtra("surveyHash");
+            }
+        }
 
     }
 

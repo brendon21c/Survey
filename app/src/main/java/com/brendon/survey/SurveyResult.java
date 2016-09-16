@@ -12,11 +12,14 @@ import java.util.HashMap;
 
 public class SurveyResult extends AppCompatActivity {
 
-    private int yesVote;
-    private int noVote;
+    private int mSurveyVote1;
+    private int mSurveyVote2;
 
     private HashMap<String,Integer> surveyHash;
     private String mSurveyText = "";
+    private String mSurveyAnswer1;
+    private String mSurveyAnswer2;
+
 
     private TextView mSurveyQuestion;
     private Button mSurveyResultButton;
@@ -34,8 +37,11 @@ public class SurveyResult extends AppCompatActivity {
 
         surveyHash = (HashMap<String, Integer>) intentData.getSerializableExtra("Hash key"); // pulls in the Survey data
         mSurveyText = intentData.getStringExtra("Question key"); // sets the survey question
-        yesVote = surveyHash.get(MainActivity.mAnswerkey1); // sets the number of yes votes
-        noVote = surveyHash.get(MainActivity.mAnswerkey2); // sets the number of no votes
+        mSurveyVote1 = surveyHash.get(MainActivity.mAnswerkey1); // sets the survey answer vote number
+        mSurveyVote2 = surveyHash.get(MainActivity.mAnswerkey2); // sets the survey answer vote number
+        mSurveyAnswer1 = MainActivity.mAnswerkey1;
+        mSurveyAnswer2 = MainActivity.mAnswerkey2;
+
 
 
         /*
@@ -55,11 +61,11 @@ public class SurveyResult extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                yesVote = 0;
-                noVote = 0;
+                mSurveyVote1 = 0;
+                mSurveyVote2 = 0;
 
-                surveyHash.put("yes", yesVote);
-                surveyHash.put("no", noVote);
+                surveyHash.put("yes", mSurveyVote1);
+                surveyHash.put("no", mSurveyVote2);
 
 
             }
@@ -70,7 +76,7 @@ public class SurveyResult extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                finish(); // TODO Hashmap changes are not saving to main activiy, fix this!
+                sendBackToMain(surveyHash);
             }
         });
 
@@ -78,12 +84,32 @@ public class SurveyResult extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(SurveyResult.this, "yes equal " + yesVote + "\n" +
-                        " no equal " + noVote,Toast.LENGTH_LONG).show();
+                mSurveyQuestion.setText(mSurveyText + "\n\n" + "The total number of people who voted " + mSurveyAnswer1 + " " + mSurveyVote1
+                 + "\n" + "The total number of people who voted " + mSurveyAnswer2 + " " + mSurveyVote2);
+
+
 
             }
         });
 
+
+    }
+
+    /*
+    This is meant to send the data back to main and update parent Hashmap. I got help from stack exchange on
+    moving hashmaps via bundles.
+     */
+    private void sendBackToMain(HashMap<String, Integer> hashSend) {
+
+        /*
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("surveyHash", hashSend);
+        */
+
+        Intent intent = new Intent();
+        intent.putExtra("surveyHash",hashSend);
+        setResult(RESULT_OK,intent);
+        this.finish();
 
     }
 }
