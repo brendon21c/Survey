@@ -17,6 +17,8 @@
         </activity>
         <activity android:name=".SurveyResult">
         </activity>
+        <activity android:name=".UpdateQuestion">
+        </activity>
     </application>
 
 </manifest>

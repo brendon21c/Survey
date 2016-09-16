@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String QUESTION_INDEX_KEY = "Question key";
     private static final String HASH_INDEX_KEY = "Hash key";
     private static final int SURVEY_REQUEST_CODE = 1;
+    private static final int UPDATE_REQUEST_CODE = 2;
 
 
 
@@ -29,11 +30,11 @@ public class MainActivity extends AppCompatActivity {
     /*
     This section is to provide a starting point for the values
      */
-    private int mAnswerStart1 = 0;
-    private int mAnswerStart2 = 0;
+    private static final int  mAnswerStart1 = 0;
+    private static final int mAnswerStart2 = 0;
     private String answerTemp = "";
 
-    public String mCurrentSurveyQuestion = "Do you like fresh baked chocolate chip cookies?";
+    public static String mCurrentSurveyQuestion = "Do you like fresh baked chocolate chip cookies?";
     public static String mAnswerkey1 = "yes";
     public static String mAnswerkey2 = "no";
 
@@ -84,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
         mResetButton = (Button) findViewById(R.id.reset_button);
         mResultButton = (Button) findViewById(R.id.results_button);
 
+        mYesButton.setText(mAnswerkey1);
+        mNoButton.setText(mAnswerkey2);
 
 
         // Listener for the yes button
@@ -150,8 +153,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                surveyBank.put(mAnswerkey1, mAnswerStart1);
-                surveyBank.put(mAnswerkey2, mAnswerStart2);
+                Intent intent = new Intent(MainActivity.this, UpdateQuestion.class);
+                startActivityForResult(intent, UPDATE_REQUEST_CODE);
 
             }
         });
@@ -188,6 +191,42 @@ public class MainActivity extends AppCompatActivity {
 
                 surveyBank = (HashMap<String, Integer>) data.getSerializableExtra("surveyHash");
             }
+        }
+
+        if (requestCode == UPDATE_REQUEST_CODE) {
+
+            if (resultCode == RESULT_OK && data.hasExtra("question")) {
+
+                mCurrentSurveyQuestion = data.getStringExtra("question");
+                mSurveyQuestion.setText(mCurrentSurveyQuestion);
+            }
+
+
+        }
+
+        if (requestCode == UPDATE_REQUEST_CODE) {
+
+            if (resultCode == RESULT_OK && data.hasExtra("choice1")) {
+
+                mAnswerkey1 = data.getStringExtra("choice1");
+                mYesButton.setText(mAnswerkey1);
+                surveyBank.clear();
+                surveyBank.put(mAnswerkey1, mAnswerStart1);
+            }
+
+
+        }
+
+        if (requestCode == UPDATE_REQUEST_CODE) {
+
+            if (resultCode == RESULT_OK && data.hasExtra("choice2")) {
+
+                mAnswerkey2 = data.getStringExtra("choice2");
+                mNoButton.setText(mAnswerkey2);
+                surveyBank.put(mAnswerkey2, mAnswerStart2);
+            }
+
+
         }
 
     }

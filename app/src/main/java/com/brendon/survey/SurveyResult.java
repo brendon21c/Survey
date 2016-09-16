@@ -64,8 +64,8 @@ public class SurveyResult extends AppCompatActivity {
                 mSurveyVote1 = 0;
                 mSurveyVote2 = 0;
 
-                surveyHash.put("yes", mSurveyVote1);
-                surveyHash.put("no", mSurveyVote2);
+                surveyHash.put(MainActivity.mAnswerkey1, mSurveyVote1);
+                surveyHash.put(MainActivity.mAnswerkey2, mSurveyVote2);
 
 
             }
